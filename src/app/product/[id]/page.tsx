@@ -10,7 +10,7 @@ import { useCartStore } from '@/store/useCartStore';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   image: string;
@@ -27,7 +27,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   useEffect(() => {
     const fetchProduct = async () => {
       const mockProduct = {
-        id: parseInt(resolvedParams.id),
+        id: resolvedParams.id,
         name: "Product Name",
         price: 299.99,
         image: "https://picsum.photos/seed/product/800/800",

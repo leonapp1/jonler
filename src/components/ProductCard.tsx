@@ -3,7 +3,7 @@
 import { useCart } from '@/context/CartContext';
 import { useCartStore } from '@/store/useCartStore';
 import Image from 'next/image';
-import { ShoppingCart, Heart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import CartButton from '@/components/ui/CartButton';
 import { useRouter } from 'next/navigation';
 

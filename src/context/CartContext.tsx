@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useReducer, ReactNode, useEffect, useCallback, useMemo } from 'react';
+import { createContext, useContext, useReducer, ReactNode, useCallback, useMemo } from 'react';
 
 interface CartItem {
   id: string;
@@ -103,7 +103,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [], total: 0 });
 
-  const memoizedDispatch = useCallback(dispatch, []);
+  const memoizedDispatch = useCallback(dispatch, [dispatch]);
   const contextValue = useMemo(() => ({
     state,
     dispatch: memoizedDispatch

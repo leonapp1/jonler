@@ -14,7 +14,12 @@ export default function Header() {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   
-  const fetchSuggestions = useCallback(debounce(async (query: string) => {
+  interface Product {
+  name: string;
+}
+
+const fetchSuggestions = useCallback(
+  debounce(async (query: string) => {
     if (query.length > 0) {
       try {
         const apiUrl = new URL('https://script.google.com/macros/s/AKfycbyz00Fe_-oTsmYkQjauUKLkgBazgU46edkZLDXvp3EA7xAIeVx7WKQDe1YKpVIGpWEO/exec');
@@ -28,7 +33,7 @@ export default function Header() {
         
         if (response.ok) {
           const data = await response.json();
-          setSuggestions(data.map((product: any) => product.name).slice(0, 5));
+          setSuggestions(data.map((product: Product) => product.name).slice(0, 5));
         }
       } catch (error) {
         console.error('Error fetching suggestions:', error);
@@ -36,7 +41,9 @@ export default function Header() {
     } else {
       setSuggestions([]);
     }
-  }, 300), []);
+  }, 300),
+  []
+);
   
   useEffect(() => {
     fetchSuggestions(searchTerm);
