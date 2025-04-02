@@ -28,9 +28,13 @@ export default function useProducts(
 			setLoading(true);
 
 			try {
-				// Verificar si los datos están en sessionStorage
-				const cachedData = sessionStorage.getItem(apiUrl);
-				if (cachedData) {
+				// Verificar si los datos están en localStorage con timestamp
+				const cachedData = localStorage.getItem(apiUrl);
+				const cachedTimestamp = localStorage.getItem(`${apiUrl}_timestamp`);
+				const now = Date.now();
+				const oneHour = 3600000; // 1 hora en milisegundos
+				
+				if (cachedData && cachedTimestamp && (now - parseInt(cachedTimestamp)) < oneHour) {
 					setProducts(JSON.parse(cachedData));
 					setLoading(false);
 					console.timeEnd("fetchProducts");
@@ -50,7 +54,8 @@ export default function useProducts(
 				}
 
 				const data = await response.json();
-				sessionStorage.setItem(apiUrl, JSON.stringify(data)); // Guardar en caché
+				localStorage.setItem(apiUrl, JSON.stringify(data)); // Guardar en localStorage
+				localStorage.setItem(`${apiUrl}_timestamp`, Date.now().toString()); // Guardar timestamp
 				setProducts(data);
 			} catch (err) {
 				setError(
