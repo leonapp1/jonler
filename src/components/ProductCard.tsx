@@ -45,7 +45,7 @@ export default function ProductCard({ product }: ProductProps) {
   };
 
   return (
-    <div className="group transition-transform hover:scale-[1.03] duration-300 bg-transparent rounded-xl shadow-lg hover:shadow-xl border border-purple-200/30 h-full max-h-[552px] flex flex-col">
+    <div className="group transition-transform hover:scale-[1.03] duration-300 bg-transparent rounded-xl shadow-lg hover:shadow-xl border border-purple-200/30 h-full max-h-[600px] max-w-80 flex flex-col">
       <div className="overflow-hidden rounded-t-xl bg-transparent min-h-80">
         <div className="relative h-full w-full">
           <Link href={`/product/${product.id}`} className='group'>
