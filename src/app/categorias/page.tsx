@@ -5,9 +5,7 @@ import useProducts from '../../hooks/useProducts';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 export default function CategoriesPage() {
-
-  const { products} = useProducts('https://script.google.com/macros/s/AKfycbyz00Fe_-oTsmYkQjauUKLkgBazgU46edkZLDXvp3EA7xAIeVx7WKQDe1YKpVIGpWEO/exec');
-
+  const { products} = useProducts();
   return (
       <>
     <Header />

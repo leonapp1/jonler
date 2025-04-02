@@ -10,10 +10,9 @@ interface ProductGridProps {
 
 export default function ProductGrid({ category, searchTerm }: ProductGridProps) {
   const { products, loading } = useProducts(
-    'https://script.google.com/macros/s/AKfycbyz00Fe_-oTsmYkQjauUKLkgBazgU46edkZLDXvp3EA7xAIeVx7WKQDe1YKpVIGpWEO/exec',
-    category,
-    searchTerm
-  );
+		category,
+		searchTerm
+	);
 
   if (loading) {
     return (
@@ -26,12 +25,16 @@ export default function ProductGrid({ category, searchTerm }: ProductGridProps) 
   }
 
   return (
-    <div className="grid grid-cols-1 
-    sm:grid-cols-2 md:grid-cols-3 
-    lg:grid-cols-4 gap-2 sm:gap-3 
-    md:gap-4 p-2 sm:p-3 md:p-4 ">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4
+      gap-2 sm:gap-3 md:gap-4 lg:gap-5
+      p-2 sm:p-3 md:p-4 lg:p-5
+      mx-auto max-w-[2000px]
+      animate-fadeIn mt-24 md:mt-10">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <ProductCard 
+          key={product.id} 
+          product={product}
+        />
       ))}
     </div>
   );

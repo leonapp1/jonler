@@ -11,9 +11,8 @@ interface Product {
 	tipo: string;
 	categoria: string;
 }
-
+const apiUrl = "https://script.google.com/macros/s/AKfycbyz00Fe_-oTsmYkQjauUKLkgBazgU46edkZLDXvp3EA7xAIeVx7WKQDe1YKpVIGpWEO/exec";
 export default function useProducts(
-	apiUrl: string,
 	category?: string,
 	searchTerm?: string
 ) {

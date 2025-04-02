@@ -8,6 +8,7 @@ import { useCartStore } from "@/store/useCartStore";
 import CartModal from "./CartModal";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
+import useProducts from '../hooks/useProducts';
 
 interface Product {
 	name: string;
@@ -27,152 +28,126 @@ export default function Header() {
 		[state.items]
 	);
 
-	// Mueve debounce fuera de useCallback para que no se recree en cada render
+	const { products } = useProducts(undefined, searchTerm.toLowerCase());
+
 	const debouncedFetchSuggestions = useMemo(
 		() =>
-			debounce(async (query: string) => {
-				if (!query) {
+			debounce(() => {
+				if (!searchTerm) {
 					setSuggestions([]);
 					return;
 				}
 
-				try {
-					const apiUrl = new URL(
-						"https://script.google.com/macros/s/AKfycbyz00Fe_-oTsmYkQjauUKLkgBazgU46edkZLDXvp3EA7xAIeVx7WKQDe1YKpVIGpWEO/exec"
-					);
-					apiUrl.searchParams.set("q", query);
-					const response = await fetch(apiUrl.toString(), {
-						method: "GET",
-						headers: {
-							Accept: "application/json",
-						},
-					});
+				const filtered = products
+					.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
+					.slice(0, 5)
+					.map(p => p.name);
 
-					if (response.ok) {
-						const data = await response.json();
-						setSuggestions(
-							data
-								.slice(0, 5)
-								.map((product: Product) => product.name)
-						);
-					}
-				} catch (error) {
-					console.error("Error fetching suggestions:", error);
-				}
+				setSuggestions(filtered);
 			}, 300),
-		[]
+		[products, searchTerm]
 	);
 
 	useEffect(() => {
-		debouncedFetchSuggestions(searchTerm);
+		debouncedFetchSuggestions();
 	}, [searchTerm, debouncedFetchSuggestions]);
 
 	return (
 		<>
-			<header className="bg-gradient-to-r from-purple-600 to-indigo-900 z-20">
-				<div className="container mx-auto px-4 py-4">
-					<div className="flex flex-row items-center justify-between">
-						<div className="flex items-center flex-row gap-6">
+			<header className="bg-gradient-to-r from-purple-600 to-indigo-900 z-20 border-b shadow-lg fixed w-full top-0 animate-slideDown">
+				<nav className="container mx-auto px-4 py-4">
+					<div className="flex flex-col md:flex-row items-center justify-between md:space-y-0">
+						{/* Logo and Navigation Section */}
+						<div className="flex flex-col md:flex-row items-center md:space-y-0 md:gap-8 w-full md:w-auto animate-fadeIn">
+							{/* Logo */}
 							<Link
 								href="/"
-								className="text-2xl font-bold text-white hover:text-blue-200 transition-colors"
+								className="text-2xl md:text-3xl font-extrabold text-white hover:text-blue-200 transition-all transform hover:scale-105 animate-bounce"
 							>
-								Jonler estore
+								<span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-blue-400">
+									Jonler estore
+								</span>
 							</Link>
-							<Link
-								href="/categorias"
-								className="text-white hover:text-blue-200 transition-colors"
-							>
-								Categorías
-							</Link>
+							{/* Navigation Links */}
+							<nav className="flex flex-wrap justify-center gap-3 md:gap-6">
+								<Link
+									href="/categorias"
+									className="text-white hover:text-blue-200 transition-colors font-medium px-3 py-1 rounded-lg hover:bg-white/10 hover:animate-pulse"
+								>
+									Categorías
+								</Link>
+							</nav>
 						</div>
 
-						<div className="flex items-center space-x-6">
+						{/* Search and Cart Section */}
+						<div className="flex flex-col md:flex-row items-center md:space-y-0 md:space-x-6 w-full md:w-auto animate-fadeIn">
+							{/* Search Form */}
 							<form
+								className="flex items-center group relative w-full md:w-auto"
 								onSubmit={(e) => {
 									e.preventDefault();
-									if (searchTerm.trim()) {
-										router.push(
-											`/search?q=${encodeURIComponent(
-												searchTerm.trim()
-											)}`
-										);
-									}
+									router.push(`/search?q=${encodeURIComponent(searchTerm)}`);
 								}}
-								className="flex items-center"
 							>
-								<div className="relative">
+								<div className="relative flex-1 md:flex-none">
 									<input
 										type="text"
 										value={searchTerm}
 										onChange={(e) => {
 											setSearchTerm(e.target.value);
-											setShowSuggestions(
-												!!e.target.value
-											);
+											setShowSuggestions(!!e.target.value);
 										}}
-										onFocus={() =>
-											setShowSuggestions(
-												searchTerm.length > 0
-											)
-										}
-										onBlur={() =>
-											setTimeout(
-												() => setShowSuggestions(false),
-												200
-											)
-										}
-										className="px-4 py-1 rounded-l-full focus:outline-none text-gray-800 bg-gray-200"
-										placeholder="Buscar productos..."
+										onFocus={() => setShowSuggestions(searchTerm.length > 0)}
+										onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+										className="w-full md:w-80 px-4 md:px-6 py-2 rounded-full focus:outline-none text-gray-800 bg-gray-50 ring-2 ring-transparent focus:ring-purple-300 transition-all hover:shadow-lg"
+										placeholder="Buscar productos, marcas..."
 									/>
-									{showSuggestions &&
-										suggestions.length > 0 && (
-											<div className="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg">
-												{suggestions.map(
-													(suggestion, index) => (
-														<div
-															key={index}
-															className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-															onMouseDown={() => {
-																setSearchTerm(
-																	suggestion
-																);
-																setShowSuggestions(
-																	false
-																);
-															}}
-														>
-															{suggestion}
-														</div>
-													)
-												)}
-											</div>
-										)}
+									{/* Search Suggestions Dropdown */}
+									{showSuggestions && suggestions.length > 0 && (
+										<div className="absolute z-10 w-full mt-2 bg-white rounded-xl shadow-xl overflow-hidden animate-fadeInDown">
+											{suggestions.map((suggestion, index) => (
+												<div
+													key={index}
+													className="px-4 py-3 hover:bg-gray-50 active:bg-gray-200  cursor-pointer border-b last:border-b-0 text-sm md:text-base hover:translate-x-1 transform transition-transform"
+													onMouseDown={() => {
+														setSearchTerm(suggestion);
+														setShowSuggestions(false);
+													}}
+												>
+													{suggestion}
+												</div>
+											))}
+										</div>
+									)}
 								</div>
+								{/* Search Button */}
 								<button
 									type="submit"
-									className="py-1.5 px-3 bg-blue-500 hover:bg-blue-600 rounded-r-full transition-colors cursor-pointer"
+									className="ml-2 p-2 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 rounded-full transition-all shadow-lg hover:shadow-xl hover:rotate-12"
 								>
-									<Search size={22} className="text-white" />
+									<Search size={20} className="text-white transform group-hover:scale-110 transition-transform" />
 								</button>
 							</form>
+							{/* Shopping Cart Button */}
 							<button
 								onClick={open}
-								className="p-2 hover:bg-blue-500 rounded-full transition-colors relative"
+								className="fixed bottom-4 right-4 p-3 bg-gradient-to-r from-purple-600 to-indigo-900 hover:from-purple-700 hover:to-indigo-950 transition-all group rounded-full shadow-lg hover:shadow-xl z-50 animate-bounce hover:animate-none"
 							>
-								<ShoppingCart
-									size={22}
-									className="text-white cursor-pointer"
-								/>
-								{itemCount > 0 && (
-									<span className="absolute -top-1 -right-1 bg-indigo-800 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center font-medium">
-										{itemCount}
-									</span>
-								)}
+								<div className="relative">
+									<ShoppingCart
+										size={28}
+										className="text-white transform group-hover:scale-110 transition-transform"
+									/>
+									{itemCount > 0 && (
+										<span className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center font-bold shadow-lg animate-pulse">
+											{itemCount}
+										</span>
+									)}
+								</div>
 							</button>
 						</div>
 					</div>
-				</div>
+				</nav>
 			</header>
 
 			<CartModal isOpen={isOpen} onClose={close} />
