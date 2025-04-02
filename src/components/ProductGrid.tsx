@@ -17,7 +17,7 @@ export default function ProductGrid({ category, searchTerm }: ProductGridProps) 
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 p-2">
+      <div className="flex flex-wrap flex-row gap-2 p-2">
         {[...Array(6)].map((_, index) => (
           <div key={index} className="bg-gray-100 animate-pulse h-[300px] sm:h-[400px] rounded-xl"></div>
         ))}
@@ -26,7 +26,7 @@ export default function ProductGrid({ category, searchTerm }: ProductGridProps) 
   }
 
   return (
-    <div className="grid grid-cols-2 
+    <div className="grid grid-cols-1 
     sm:grid-cols-2 md:grid-cols-3 
     lg:grid-cols-4 gap-2 sm:gap-3 
     md:gap-4 p-2 sm:p-3 md:p-4 ">
