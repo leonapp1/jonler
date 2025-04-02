@@ -10,10 +10,6 @@ import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import useProducts from '../hooks/useProducts';
 
-interface Product {
-	name: string;
-}
-
 export default function Header() {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [suggestions, setSuggestions] = useState<string[]>([]);
