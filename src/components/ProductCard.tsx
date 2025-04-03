@@ -76,7 +76,7 @@ export default function ProductCard({ product }: ProductProps) {
               <Link href={`/product/${product.id}`} className='hover:underline'>{product.name}</Link>
       
             </h3>
-            <p className="text-base font-bold text-white w-fit">${product.price}</p>
+            <p className="text-base font-bold text-white w-fit">S/.{product.price}</p>
           </div>
           <p className="flex self-end text-xs text-white/90 line-clamp-2 min-h-[2rem]">{product.description}</p>
         </div>
