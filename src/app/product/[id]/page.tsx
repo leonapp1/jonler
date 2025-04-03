@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, use } from 'react';
+import {  use } from 'react';
 import Image from 'next/image';
 import { Heart, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
