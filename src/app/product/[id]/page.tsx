@@ -11,15 +11,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import useProducts from '@/hooks/useProducts';
 
-interface Product {
-  id: string;
-  name: string;
-  price: string;
-  image: string;
-  description: string;
-  tipo: string;
-  categoria: string;
-}
+
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
