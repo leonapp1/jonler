@@ -9,12 +9,16 @@ import { useCart } from '@/context/CartContext';
 import { useCartStore } from '@/store/useCartStore';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import useProducts from '@/hooks/useProducts';
+
 interface Product {
   id: string;
   name: string;
-  price: number;
+  price: string;
   image: string;
   description: string;
+  tipo: string;
+  categoria: string;
 }
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -22,25 +26,15 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   const router = useRouter();
   const { dispatch } = useCart();
   const openCart = useCartStore((state) => state.open);
-  const [product, setProduct] = useState<Product | null>(null);
+  const { products, loading, error } = useProducts();
+  const product = products.find(p => p.id === resolvedParams.id);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const mockProduct = {
-        id: resolvedParams.id,
-        name: "Product Name",
-        price: 299.99,
-        image: "https://picsum.photos/seed/product/800/800",
-        description: "Detailed product description goes here. This is a longer description that provides more information about the product's features and benefits."
-      };
-      setProduct(mockProduct);
-    };
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
+  }
 
-    fetchProduct();
-  }, [resolvedParams.id]);
-
-  if (!product) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (loading || !product) {
+    return <div className="min-h-screen flex items-center justify-center">Cargando...</div>;
   }
 
   const addToCart = () => {
@@ -49,7 +43,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       payload: {
         id: product.id,
         name: product.name,
-        price: product.price,
+        price: parseFloat(product.price),
         image: product.image,
         quantity: 1,
       },
@@ -91,7 +85,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
               <h1 className="text-3xl font-bold text-primary mb-4">{product.name}</h1>
               <div className="flex items-center gap-4 mb-6">
                 <span className="text-2xl font-bold text-accent">S/.{product.price}</span>
-                <span className="text-neutral/70 line-through">S/.{(product.price * 1.2).toFixed(2)}</span>
+                <span className="text-neutral/70 line-through">S/.{(parseFloat(product.price) * 1.2).toFixed(2)}</span>
               </div>
               <p className="text-neutral mb-8 text-lg leading-relaxed">
                 {product.description}

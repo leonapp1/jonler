@@ -138,7 +138,10 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
               </div>
             </div>
             <WhatsAppCheckout 
-              items={state.items}
+              items={state.items.map(item => ({
+                ...item,
+                productUrl: `${window.location.origin}/product/${item.id}`
+              }))}
               total={state.total}
               disabled={state.items.length === 0}
             />

@@ -29,7 +29,7 @@ export default function ProductGrid({ category, searchTerm }: ProductGridProps) 
       gap-2 sm:gap-3 md:gap-4 lg:gap-5
       p-2 sm:p-3 md:p-4 lg:p-5
       mx-auto max-w-[2000px]
-      animate-fadeIn mt-24 md:mt-10">
+      animate-fadeIn ">
       {products.map((product) => (
         <ProductCard 
           key={product.id} 
