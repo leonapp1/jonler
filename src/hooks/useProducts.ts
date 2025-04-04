@@ -10,17 +10,16 @@ interface Product {
 	description: string;
 	tipo: string;
 	categoria: string;
+	images?: string[];
 }
 const apiUrl = "https://script.google.com/macros/s/AKfycbyz00Fe_-oTsmYkQjauUKLkgBazgU46edkZLDXvp3EA7xAIeVx7WKQDe1YKpVIGpWEO/exec";
-export default function useProducts(
-	category?: string,
-	searchTerm?: string
-) {
+export default function useProducts(category?: string, searchTerm?: string) {
 	const [products, setProducts] = useState<Product[]>([]);
 	const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
+	// Keep hook order consistent - move all useEffect calls to top
 	useEffect(() => {
 		const fetchProducts = async () => {
 			console.time("fetchProducts");
@@ -67,7 +66,7 @@ export default function useProducts(
 		};
 
 		fetchProducts();
-	}, [apiUrl]);
+	}, []); // Removed apiUrl from dependencies
 
 	useEffect(() => {
 		if (!products.length) return;
