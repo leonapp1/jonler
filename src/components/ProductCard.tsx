@@ -46,7 +46,7 @@ export default function ProductCard({ product }: ProductProps) {
 
   return (
     <div className="group transition-transform hover:scale-[1.03] duration-300 bg-transparent rounded-xl shadow-lg hover:shadow-xl border border-purple-200/30 h-full max-h-[600px] max-w-80 flex flex-col">
-      <div className="overflow-hidden rounded-t-xl bg-transparent min-h-80">
+      <div className="overflow-hidden rounded-t-xl bg-transparent min-h-40 md:min-h-52">
         <div className="relative h-full w-full group">
           <Link href={`/product/${product.id}`} className="block h-full">
             <div className="absolute -top-6 -right-6 z-10">
@@ -64,22 +64,23 @@ export default function ProductCard({ product }: ProductProps) {
 
         </div>
       </div>
-      <div className="flex flex-col gap-8 p-4 h-full justify-between">
+      <div className="flex flex-col gap-4 p-4 h-full justify-between">
         <div className="flex justify-between items-start flex-wrap gap-2">
 
-          <h3 className="text-base font-semibold text-white hover:text-purple-200 transition-colors">
+          <h3 className=" text-base sm:text-sm font-semibold text-white hover:text-purple-200 transition-colors">
             <Link href={`/product/${product.id}`} className='hover:underline'>{product.name}</Link>
-
           </h3>
 
           <p className="line-clamp-2 text-sm text-gray-300">{product.description}</p>
         </div>
-        <CartButton
-          onClick={addToCart}
-          aria-label="Add to cart"
-        >
-          <span className="text-sm">Agregar</span>
-        </CartButton>
+          <CartButton
+            onClick={addToCart}
+            aria-label="Add to cart"
+          >
+            <span className="hidden sm:block text-sm font-medium">Agregar al Carrito</span>
+
+            <span className="sm:hidden text-sm font-medium">Agregar</span>
+          </CartButton>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-indigo-900 via-purple-800 to-pink-900 relative overflow-hidden">
       {/* Add animated background particles */}
       <Header />
-      <main className="flex-1 max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 relative z-10 mt-24 md:mt-10">
+      <main className="flex-1  mx-auto py-12 sm:px-6 lg:px-8 relative z-10 mt-24 md:mt-10">
           <ProductGrid />
       </main>
       <Footer />

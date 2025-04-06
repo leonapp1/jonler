@@ -26,7 +26,7 @@ const CartContext = createContext<{
   dispatch: React.Dispatch<CartAction>;
 } | null>(null);
 
-const MAX_QUANTITY = 10;
+const MAX_QUANTITY = 100;
 const MIN_QUANTITY = 1;
 
 const calculateTotal = (items: CartItem[]): number => {

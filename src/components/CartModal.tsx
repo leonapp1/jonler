@@ -32,12 +32,12 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
 
   return (
     <>
-      <div 
+      <div
         className={`fixed inset-0 bg-purple-700/30 backdrop-blur-sm transition-all duration-300 z-40 
           ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={onClose}
       />
-      <div 
+      <div
         className={`fixed right-0 top-0 h-full w-full sm:w-[420px] bg-white shadow-2xl 
           transform transition-all duration-300 ease-in-out z-50 
           ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
@@ -48,8 +48,8 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
               <ShoppingBag className="text-purple-700" size={24} />
               Tu Carrito
             </h2>
-            <button 
-              onClick={onClose} 
+            <button
+              onClick={onClose}
               className="p-2 hover:bg-purple-700/10 rounded-full transition-colors"
             >
               <X size={20} />
@@ -61,7 +61,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
               <div className="text-center py-12 space-y-4">
                 <ShoppingBag size={48} className="mx-auto text-purple-700" />
                 <p className="text-gray-500 text-lg">Tu carrito está vacío</p>
-                <button 
+                <button
                   onClick={onClose}
                   className="text-purple-700 hover:text-purple-500 font-medium"
                 >
@@ -71,7 +71,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
             ) : (
               <div className="space-y-6">
                 {state.items.map((item) => (
-                  <div key={item.id} 
+                  <div key={item.id}
                     className="flex gap-4 pb-6 border-b last:border-0 group"
                   >
                     <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-gray-100">
@@ -95,9 +95,29 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                           >
                             <Minus size={16} />
                           </button>
-                          <span className="w-8 text-center font-medium">
-                            {item.quantity}
-                          </span>
+                          <input
+                            type="number"
+                            value={item.quantity}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              if (value === '') {
+                                return; // Allow empty field temporarily
+                              }
+                              const newQuantity = parseInt(value);
+                              if (!isNaN(newQuantity) && newQuantity >= 1) {
+                                updateQuantity(item.id, newQuantity);
+                              }
+                            }}
+                            onBlur={(e) => {
+                              const value = e.target.value;
+                              if (value === '') {
+                                updateQuantity(item.id, 1);
+                              }
+                            }}
+                            onFocus={(e) => e.target.select()}
+                            className="w-12 text-center font-medium focus:outline-none"
+                            min="1"
+                          />
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
                             className="p-1 hover:bg-purple-700/10 rounded-r-full px-2"
@@ -137,7 +157,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                 <span className="text-purple-700">S/.{state.total.toFixed(2)}</span>
               </div>
             </div>
-            <WhatsAppCheckout 
+            <WhatsAppCheckout
               items={state.items.map(item => ({
                 ...item,
                 productUrl: `${window.location.origin}/product/${item.id}`
