@@ -7,13 +7,14 @@ import { useState } from 'react';
 interface ProductGridProps {
   category?: string;
   searchTerm?: string;
+  tipo?: string;
 }
 
-export default function ProductGrid({ category, searchTerm }: ProductGridProps) {
+export default function ProductGrid({ category, searchTerm,tipo}: ProductGridProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
 
-  const { products, loading } = useProducts(category, searchTerm);
+  const { products, loading } = useProducts(category, searchTerm,tipo);
   
   // Pagination calculations
   const startIndex = (currentPage - 1) * itemsPerPage;

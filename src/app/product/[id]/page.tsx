@@ -1,8 +1,8 @@
 'use client';
 
-import {  use } from 'react';
+import { use } from 'react';
 import Image from 'next/image';
-import {  ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import CartButton from '@/components/ui/CartButton';
 import { useCart } from '@/context/CartContext';
@@ -10,7 +10,9 @@ import { useCartStore } from '@/store/useCartStore';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import useProducts from '@/hooks/useProducts';
-import { useState, useEffect } from 'react'; // Add useEffect
+import { useState, useEffect } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 interface Product {
   id: string;
@@ -20,25 +22,25 @@ interface Product {
   description: string;
   tipo?: string;
   categoria?: string;
-  images?: string[];  // Properly define the images array
+  images?: string[];
 }
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = use(params); // Unwrap promise with use()
+  const resolvedParams = use(params);
   const router = useRouter();
   const { dispatch } = useCart();
   const openCart = useCartStore((state) => state.open);
   const { products, loading, error } = useProducts();
   const [product, setProduct] = useState<Product | null>(null);
-  const [selectedImage, setSelectedImage] = useState('');
+  // Removed selectedImage as it is not used
 
   useEffect(() => {
-    const foundProduct = products.find(p => p.id === resolvedParams.id); // Use resolvedParams.id
+    const foundProduct = products.find(p => p.id === resolvedParams.id);
     if (foundProduct) {
       setProduct(foundProduct);
-      setSelectedImage(foundProduct.image);
+      // Removed setSelectedImage as it is not used
     }
-  }, [products, resolvedParams.id]); // Update dependency
+  }, [products, resolvedParams.id]);
 
   if (error) {
     return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
@@ -62,56 +64,41 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
     openCart();
   };
 
-  // Remove this duplicate declaration:
-  // const [selectedImage, setSelectedImage] = useState(product.image);
-
   return (
     <>
       <Header/>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-indigo-900 via-purple-800 to-pink-900 relative overflow-hidden">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-indigo-900 via-purple-800 to-pink-900 relative overflow-hidden mt-32 md:mt-20">
         <div className="container mx-auto px-2 py-4 sm:px-4 sm:py-8 max-w-7xl">
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-2 text-neutral hover:text-primary mb-4 sm:mb-8 transition-colors"
-          >
-            <ArrowLeft size={18} className="sm:size-20" />
-            <span className="text-sm sm:text-base">Volver</span>
-          </button>
-
-          <div className=" rounded-xl sm:rounded-2xl shadow-lg overflow-hidden backdrop-blur-sm bg-white/5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-12 p-4 sm:p-8">
+          <div className="rounded-xl sm:rounded-2xl shadow-lg overflow-hidden backdrop-blur-sm bg-white/5">
+            <button
+              onClick={() => router.back()}
+              className="flex items-center text-white hover:text-accent transition-all duration-300 transform hover:scale-105 bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm"
+            >
+              <ArrowLeft />
+              <span className="text-sm sm:text-base font-medium">Volver</span>
+            </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-12 p-2 sm:p-4">
               {/* Image Gallery Section */}
               <div className="space-y-4 sm:space-y-6 flex flex-col items-center">
-                <div className="relative h-[300px] sm:h-[400px] md:h-[500px] w-full rounded-lg sm:rounded-xl overflow-hidden group">
-                  <Image
-                    src={selectedImage}
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    priority
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 50vw"
-                    quality={90}
-                  />
-                </div>
-                <div className="flex justify-start sm:justify-center gap-2 sm:gap-3 overflow-x-auto pb-2 w-full">
+                <Swiper
+                  spaceBetween={10}
+                  slidesPerView={1}
+                  className="w-full h-[300px] sm:h-[400px] md:h-[500px] rounded-lg sm:rounded-xl overflow-hidden"
+                >
                   {[product.image, ...(product.images || [])].map((img, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedImage(img)}
-                      className={`w-16 h-16 sm:w-24 sm:h-24 shrink-0 rounded-md sm:rounded-lg overflow-hidden border-2 ${
-                        selectedImage === img ? 'border-purple-400' : 'border-transparent'
-                      } transition-all hover:scale-105`}
-                    >
+                    <SwiperSlide key={index}>
                       <Image
                         src={img}
                         alt={`Thumbnail ${index + 1}`}
-                        width={96}
-                        height={96}
-                        className="object-cover w-full h-full"
+                        fill
+                        className="object-cover"
+                        priority
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 50vw"
+                        quality={90}
                       />
-                    </button>
+                    </SwiperSlide>
                   ))}
-                </div>
+                </Swiper>
               </div>
 
               {/* Product Details */}
@@ -138,13 +125,9 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   {product.description}
                 </p>
 
-              
-                  <CartButton 
-                    onClick={addToCart}
-                  >
-                    Agregar al Carrito
-                  </CartButton>
-               
+                <CartButton onClick={addToCart}>
+                  Agregar al Carrito
+                </CartButton>
               </div>
             </div>
           </div>
@@ -152,6 +135,5 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       </div>
       <Footer/>
     </>
-    
   );
 }

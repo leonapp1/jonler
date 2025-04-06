@@ -13,7 +13,7 @@ interface Product {
 	images?: string[];
 }
 const apiUrl = "https://script.google.com/macros/s/AKfycbyz00Fe_-oTsmYkQjauUKLkgBazgU46edkZLDXvp3EA7xAIeVx7WKQDe1YKpVIGpWEO/exec";
-export default function useProducts(category?: string, searchTerm?: string) {
+export default function useProducts(category?: string, searchTerm?: string,tipo?: string) {
 	const [products, setProducts] = useState<Product[]>([]);
 	const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 	const [loading, setLoading] = useState(true);
@@ -86,9 +86,18 @@ export default function useProducts(category?: string, searchTerm?: string) {
 					product.tipo.toLowerCase().includes(term)
 			);
 		}
+		if (tipo) {
+			const term = tipo.toLowerCase();
+			result = result.filter(
+				(product) =>
+					product.name.toLowerCase().includes(term) ||
+					product.description.toLowerCase().includes(term) ||
+					product.tipo.toLowerCase().includes(term)
+			);
+		}
 
 		setFilteredProducts(result);
-	}, [products, category, searchTerm]);
+	}, [products, category, searchTerm,tipo]);
 
 	return {
 		products: filteredProducts.length > 0 ? filteredProducts : products,

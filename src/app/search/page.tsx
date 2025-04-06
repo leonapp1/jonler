@@ -10,11 +10,12 @@ function SearchResults() {
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('q') || '';
   const category = searchParams.get('category') || '';
+  const tipo = searchParams.get('tipo') || '';
   
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-indigo-900 via-purple-800 to-pink-900 relative overflow-hidden p-6 md:p-8 lg:p-12 mt-32 md:mt-10">
       <h1 className="text-2xl font-bold mb-6 text-white">Resultados de búsqueda para: {searchTerm} {category}</h1>
-      <ProductGrid searchTerm={searchTerm} category={category} />
+      <ProductGrid searchTerm={searchTerm} category={category} tipo={tipo} />
     </div>
   );
 }
