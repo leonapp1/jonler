@@ -2,9 +2,9 @@
 import { useCart } from '@/context/CartContext';
 import { useCartStore } from '@/store/useCartStore';
 import Image from 'next/image';
-import { Heart } from 'lucide-react';
 import CartButton from '@/components/ui/CartButton';
-import Link  from 'next/link';
+import Link from 'next/link';
+import ProductPrice from '@/components/ui/ProductPrice';
 
 interface ProductProps {
   product: {
@@ -36,7 +36,7 @@ export default function ProductCard({ product }: ProductProps) {
       quantity: 1,
     };
     console.log('Adding to cart:', cartItem);
-    
+
     dispatch({
       type: 'ADD_ITEM',
       payload: cartItem,
@@ -49,10 +49,8 @@ export default function ProductCard({ product }: ProductProps) {
       <div className="overflow-hidden rounded-t-xl bg-transparent min-h-80">
         <div className="relative h-full w-full group">
           <Link href={`/product/${product.id}`} className="block h-full">
-            <div className="absolute top-2 left-2 z-10">
-              <p className="text-base font-bold bg-yellow-400 text-white px-3 py-1 rounded-full backdrop-blur-sm">
-                S/.{parseFloat(product.price).toFixed(2)}
-              </p>
+            <div className="absolute -top-6 -right-6 z-10">
+              <ProductPrice price={product.price} />
             </div>
             <Image
               src={product.image}
@@ -63,28 +61,20 @@ export default function ProductCard({ product }: ProductProps) {
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl"
             />
           </Link>
-          <div className="absolute top-2 right-2 flex gap-2 z-10">
-            <button
-              onClick={() => {}}
-              className="p-2 rounded-full cursor-pointer bg-black/50 backdrop-blur-sm hover:bg-pink-500/70 transition-all duration-200 text-white hover:scale-110"
-              aria-label="Add to favorites"
-            >
-              <Heart size={18} className="hover:fill-current" />
-            </button>
-          </div>
+
         </div>
       </div>
       <div className="flex flex-col gap-8 p-4 h-full justify-between">
         <div className="flex justify-between items-start flex-wrap gap-2">
-         
-            <h3 className="text-base font-semibold text-white hover:text-purple-200 transition-colors">
-              <Link href={`/product/${product.id}`} className='hover:underline'>{product.name}</Link>
-      
-            </h3>
-          
-<p className="line-clamp-2 text-sm text-gray-300">{product.description}</p>
+
+          <h3 className="text-base font-semibold text-white hover:text-purple-200 transition-colors">
+            <Link href={`/product/${product.id}`} className='hover:underline'>{product.name}</Link>
+
+          </h3>
+
+          <p className="line-clamp-2 text-sm text-gray-300">{product.description}</p>
         </div>
-        <CartButton 
+        <CartButton
           onClick={addToCart}
           aria-label="Add to cart"
         >

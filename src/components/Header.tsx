@@ -70,7 +70,7 @@ export default function Header() {
                                     />
                                     <Link
                                         href="/"
-                                        className="relative text-2xl md:text-3xl font-extrabold text-white transition-all duration-300"
+                                        className="relative text-xl md:text-3xl font-extrabold text-white transition-all duration-300"
                                     >
                                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 hover:from-blue-300 hover:via-purple-300 hover:to-pink-300">
                                             Jonler estore

@@ -2,8 +2,7 @@
 
 import { use, useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ArrowLeft, Maximize2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import {  Maximize2 } from 'lucide-react';
 import CartButton from '@/components/ui/CartButton';
 import { useCart } from '@/context/CartContext';
 import { useCartStore } from '@/store/useCartStore';
@@ -15,6 +14,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
+import CategoryBadge from '@/components/ui/CategoryBadge';
+import ProductTypeBadge from '@/components/ui/ProductTypeBadge'; // Correct import for ProductTypeBadge
+import ProductPrice from '@/components/ui/ProductPrice'; // Correct import for ProductPrice
 
 interface Product {
   id: string;
@@ -29,7 +31,7 @@ interface Product {
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
-  const router = useRouter();
+
   const { dispatch } = useCart();
   const openCart = useCartStore((state) => state.open);
   const { products, loading, error } = useProducts();
@@ -69,84 +71,69 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
     <>
       <Header/>
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-indigo-900 via-purple-800 to-pink-900 relative overflow-hidden mt-32 md:mt-20">
-        <div className="container mx-auto px-2 py-4 sm:px-4 sm:py-8 max-w-7xl">
-          <div className="rounded-xl sm:rounded-2xl shadow-lg overflow-hidden backdrop-blur-sm bg-white/5">
-            <button
-              onClick={() => router.back()}
-              className="flex items-center text-white hover:text-accent transition-all duration-300 transform hover:scale-105 bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm"
-            >
-              <ArrowLeft />
-              <span className="text-sm sm:text-base font-medium">Volver</span>
-            </button>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-12 p-2 sm:p-4">
-              {/* Image Gallery Section */}
-              <div className="space-y-4 sm:space-y-6 flex flex-col items-center">
-                <Swiper
-                  modules={[Navigation, Pagination]}
-                  navigation
-                  pagination={{ clickable: true }}
-                  spaceBetween={10}
-                  slidesPerView={1}
-                  className="w-full h-[300px] sm:h-[400px] md:h-[500px] rounded-lg sm:rounded-xl overflow-hidden"
-                >
-                  {[product.image, ...(product.images || [])].map((img, index) => (
-                    <SwiperSlide key={index} className="relative">
-                      <Image
-                        src={img}
-                        alt={`Thumbnail ${index + 1}`}
-                        fill
-                        className="object-cover"
-                        priority
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 50vw"
-                        quality={90}
-                      />
-                      <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="absolute bottom-4 right-4 p-2 bg-white/10 text-white rounded-full hover:bg-white/20 transition-all duration-300 cursor-pointer transform hover:scale-110"
-                      >
-                        <Maximize2 size={40} />
-                      </button>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+        <div className=" mx-auto  ">
+          
+           
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-2 sm:p-6">
+            {/* Image Gallery Section */}
+            <div className="space-y-6 flex flex-col items-center">
+              <Swiper
+                modules={[Navigation, Pagination]}
+                navigation
+                pagination={{ clickable: true }}
+                spaceBetween={15}
+                slidesPerView={1}
+                className="w-full h-[350px] sm:h-[450px] md:h-[550px] rounded-2xl overflow-hidden shadow-2xl"
+              >
+                {[product.image, ...(product.images || [])].map((img, index) => (
+                  <SwiperSlide key={index} className="relative">
+                    <Image
+                      src={img}
+                      alt={`${product.name} - Image ${index + 1}`}
+                      fill
+                      className="object-cover transition-transform duration-300 hover:scale-105"
+                      priority
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      quality={95}
+                    />
+                    <button
+                      onClick={() => setIsModalOpen(true)}
+                      className="absolute bottom-6 right-6 p-3 bg-white/20 text-white rounded-full hover:bg-white/30 transition-all duration-300 cursor-pointer transform hover:scale-110 backdrop-blur-sm"
+                    >
+                      <Maximize2 size={32} />
+                    </button>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+
+            {/* Product Details */}
+            <div className="flex flex-col text-white p-6 backdrop-blur-md bg-white/20 rounded-2xl shadow-xl">
+              <div className="mb-8 flex flex-row justify-between items-start w-full relative">
+                <div className="flex flex-wrap gap-3">
+                  {product.categoria && <CategoryBadge category={product.categoria} />}
+                  {product.tipo && <ProductTypeBadge tipo={product.tipo} />}
+                </div>
+                <div className="absolute -top-12 -right-12 transform rotate-3">
+                  <ProductPrice price={product.price} />
+                </div>
               </div>
 
-              {/* Product Details */}
-              <div className="flex flex-col text-white md:items-start p-6 backdrop-blur-md bg-white/5 rounded-xl">
-                <div className="mb-6 text-left flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-                  <div className="space-y-2">
-                    {product.categoria && (
-                      <span className="inline-block bg-gradient-to-r from-purple-500/40 to-pink-500/40 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg hover:shadow-purple-500/20 transition-all duration-300">
-                        {product.categoria}
-                      </span>
-                    )}
-                    {product.tipo && (
-                      <p className="text-lg font-medium text-purple-200 bg-purple-500/10 px-4 py-1 rounded-full inline-block">
-                        {product.tipo}
-                      </p>
-                    )}
-                  </div>
-                  <span className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-yellow-400 to-amber-300 bg-clip-text text-transparent">
-                    S/.{parseFloat(product.price).toFixed(2)}
-                  </span>
-                </div>
+              <h1 className="text-2xl font-bold  bg-gradient-to-r from-white via-purple-100 to-purple-200 bg-clip-text text-transparent leading-tight">
+                {product.name}
+              </h1>
 
-                <h1 className="text-3xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                  {product.name}
-                </h1>
-
-                <div className="relative">
-                  <p className="text-base sm:text-lg leading-relaxed mb-8 text-purple-100 text-justify border-l-4 border-purple-500/30 pl-4 py-2">
-                    {product.description}
-                  </p>
-                </div>
-
-                <CartButton 
-                  onClick={addToCart}
-                >
-                  Agregar al Carrito
-                </CartButton>
+              <div className="relative ">
+                <p className="text-base leading-relaxed text-purple-50 text-justify  border-purple-400/40 py-4 ">
+                  {product.description}
+                </p>
               </div>
+
+              <CartButton 
+                onClick={addToCart}
+              >
+                Agregar al Carrito
+              </CartButton>
             </div>
           </div>
         </div>
