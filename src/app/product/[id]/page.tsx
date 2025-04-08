@@ -17,6 +17,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import CategoryBadge from "@/components/ui/CategoryBadge";
 import ProductTypeBadge from "@/components/ui/ProductTypeBadge"; // Correct import for ProductTypeBadge
 import ProductPrice from "@/components/ui/ProductPrice"; // Correct import for ProductPrice
+import ProductCard from "@/components/ProductCard";
 
 interface Product {
 	id: string;
@@ -163,13 +164,24 @@ export default function ProductPage({
 					</div>
 				</div>
         {/* Productos relacionados */}
-        <section className=" py-8 max-w-7xl w-full mx-auto">
-          <h2 className="text-2xl font-semibold text-gray-50">Otros Productos que te pueden gustar</h2>
-          <div>
-            
+        <section className="py-8 max-w-7xl w-full mx-auto">
+          <h2 className="text-2xl font-semibold text-gray-50 mb-6">Otros Productos que te pueden gustar</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {products
+              .filter(p => 
+                p.id !== product.id && 
+                (p.categoria === product.categoria || p.tipo === product.tipo)
+              )
+              .slice(0, 4) // Mostrar máximo 4 productos relacionados
+              .map((relatedProduct) => (
+                <ProductCard 
+                  key={relatedProduct.id} 
+                  product={relatedProduct} 
+                />
+              ))}
           </div>
-
         </section>
+
 			</div>
 
 			{/* Modal for Fullscreen Image */}
