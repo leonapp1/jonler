@@ -176,7 +176,7 @@ export default function Header() {
                                 {/* Search Button */}
                                 <button
                                     type="submit"
-                                    className="ml-2 p-3 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                                    className="ml-2 p-3 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer"
                                 >
                                     <Search size={20} className="text-white" />
                                 </button>
@@ -185,7 +185,7 @@ export default function Header() {
                             {/* Shopping Cart Button */}
                             <button
                                 onClick={open}
-                                className="fixed bottom-6 right-6 p-4 bg-gradient-to-r from-purple-600 to-indigo-900 hover:from-purple-700 hover:to-indigo-950 transition-all duration-300 rounded-full shadow-xl hover:shadow-2xl z-50 transform hover:scale-105"
+                                className="fixed bottom-6 right-6 p-4 bg-gradient-to-r from-purple-600 to-indigo-900 hover:from-purple-700 hover:to-indigo-950 transition-all duration-300 rounded-full shadow-xl hover:shadow-2xl z-50 transform hover:scale-105 cursor-pointer"
                             >
                                 <div className="relative">
                                     <ShoppingCart
@@ -193,7 +193,7 @@ export default function Header() {
                                         className="text-white"
                                     />
                                     {itemCount > 0 && (
-                                        <span className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center font-bold shadow-lg animate-pulse">
+                                        <span className="absolute -top-5 -right-4 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center font-bold shadow-lg">
                                             {itemCount}
                                         </span>
                                     )}

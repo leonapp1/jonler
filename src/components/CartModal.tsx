@@ -50,7 +50,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
             </h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-purple-700/10 rounded-full transition-colors"
+              className="p-2 hover:bg-purple-700/10 rounded-full transition-colors cursor-pointer"
             >
               <X size={20} />
             </button>
@@ -91,7 +91,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                         <div className="flex items-center border rounded-full">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="p-1 hover:bg-purple-700/10 rounded-l-full px-2"
+                            className="p-1 hover:bg-purple-700/10 rounded-l-full px-2 cursor-pointer"
                           >
                             <Minus size={16} />
                           </button>
@@ -120,7 +120,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                           />
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="p-1 hover:bg-purple-700/10 rounded-r-full px-2"
+                            className="p-1 hover:bg-purple-700/10 rounded-r-full px-2 cursor-pointer"
                           >
                             <Plus size={16} />
                           </button>
@@ -130,7 +130,7 @@ export default function CartModal({ isOpen, onClose }: CartModalProps) {
                             dispatch({ type: 'REMOVE_ITEM', payload: item.id });
                             if (state.items.length === 1) onClose();
                           }}
-                          className="ml-auto text-red-500 hover:bg-red-500/10 p-2 rounded-full transition-colors"
+                          className="ml-auto text-red-500 hover:bg-red-500/10 p-2 rounded-full transition-colors cursor-pointer"
                         >
                           <Trash2 size={16} />
                         </button>

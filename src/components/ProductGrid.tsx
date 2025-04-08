@@ -72,12 +72,12 @@ export default function ProductGrid({ category, searchTerm,tipo}: ProductGridPro
           onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
           disabled={currentPage === 1}
           className="px-6 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full 
-                   disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-transform"
+                   disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-transform cursor-pointer"
         >
           Anterior
         </button>
         
-        <span className="text-gray-700 font-medium">
+        <span className="text-gray-100 font-medium">
           Página {currentPage} de {totalPages}
         </span>
 
@@ -85,7 +85,7 @@ export default function ProductGrid({ category, searchTerm,tipo}: ProductGridPro
           onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
           disabled={currentPage === totalPages || products.length === 0}
           className="px-6 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full 
-                   disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-transform"
+                   disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-transform cursor-pointer"
         >
           Siguiente
         </button>

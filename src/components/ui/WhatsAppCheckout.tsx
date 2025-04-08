@@ -86,9 +86,9 @@ const introduction = 'Estoy listo para hacer el pedido con los siguientes detall
       <button 
         onClick={handleCheckout}
         disabled={disabled}
-        className="w-full bg-purple-700 text-white py-4 rounded-full 
-          hover:bg-accent transition-colors disabled:opacity-50 
-          disabled:cursor-not-allowed font-medium text-lg flex items-center justify-center gap-2"
+        className="w-full bg-purple-600 text-white py-4 rounded-full 
+          disabled:opacity-50 
+          disabled:cursor-not-allowed font-medium text-lg flex items-center justify-center gap-2 cursor-pointer hover:bg-purple-700 hover:-translate-y-1 hover:shadow-md transition-all duration-300 ease-in-out"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -111,13 +111,13 @@ const introduction = 'Estoy listo para hacer el pedido con los siguientes detall
             <div className="flex justify-end gap-4">
               <button
                 onClick={() => setShowConfirmation(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 cursor-pointer"
               >
                 Cancelar
               </button>
               <button
                 onClick={confirmCheckout}
-                className="px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-800"
+                className="px-4 py-2 bg-purple-700 text-white rounded hover:bg-purple-800 cursor-pointer"
               >
                 Confirmar
               </button>
