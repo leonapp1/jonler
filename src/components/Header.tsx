@@ -10,6 +10,7 @@ import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import useProducts from '../hooks/useProducts';
 import Image from "next/image";
+import WhatsAppButton from "@/components/ui/WhatsAppButton";
 
 export default function Header() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -93,6 +94,13 @@ export default function Header() {
                                         className="relative text-white hover:text-blue-200 transition-all duration-300 font-medium px-4 py-2 rounded-lg overflow-hidden group"
                                     >
                                         <span className="relative z-10">Tipo</span>
+                                        <div className="absolute inset-0 bg-white/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-lg"></div>
+                                    </Link>
+                                    <Link
+                                        href="/nosotros"
+                                        className="relative text-white hover:text-blue-200 transition-all duration-300 font-medium px-4 py-2 rounded-lg overflow-hidden group"
+                                    >
+                                        <span className="relative z-10">Nosotros</span>
                                         <div className="absolute inset-0 bg-white/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-lg"></div>
                                     </Link>
                                 </div>
@@ -203,7 +211,7 @@ export default function Header() {
                     </div>
                 </nav>
             </header>
-
+            <WhatsAppButton/>
             <CartModal isOpen={isOpen} onClose={close} />
         </>
     );
